@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import TodoList from "./TodoList";
+import Task from "./tasks";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
@@ -15,39 +16,41 @@ const App = () => {
       });
   }, []);
 
-  function toggleTodo(id) {
-    const newTodos = [...tasks]
-    const tasks = newTodos.find(tasks => tasks.id === id)
-    tasks.complete = !tasks.complete
-    setTasks(newTodos)
-  }
 
   function handleAddTodo(e) {
     const name = todoNameRef.current.value
-    if (name === '') return
-    setTasks(prevTodos => {
-      return [...prevTodos, { id: 1, name: name, complete: false}]
+    fetch("http://localhost:3000/api/tasks", {
+    method: "POST",
+    body: JSON.stringify({description:name}),
+    headers: {"Content-Type":"application/json"}
+
     })
-    todoNameRef.current.value = null
+      .then((res) => res.json())
+      .then((tasks) => {
+        setTasks(tasks);
+      });
+      console.log(tasks)
+
+    refresh();
   }
 
-  function handleClearTodos() {
-    const newTodos = tasks.filter(tasks => !tasks.complete)
-    setTasks(newTodos)
+  function refresh() {
+    fetch("http://localhost:3000/api/tasks", {
+    method: "GET"
+    })
+      .then((res) => res.json())
+      .then((tasks) => {
+        
+      });
   }
+
 
   return (
     <main>
-      {tasks.map((tasks) => (
-        <span className="task" key={tasks.id}>
-          {tasks.description}
-        </span>
-      ))}
-      <TodoList tasks={tasks} toggleTodo={toggleTodo} />
+      <Task tasks={tasks} />
+      <TodoList tasks={tasks} />
       <input ref={todoNameRef} type="text" />
       <button onClick={handleAddTodo}>Add Todo</button>
-      <button onClick={handleClearTodos}>Clear Complete</button>
-      <div>{tasks.filter(tasks => !tasks.complete).length} left to do</div>
     </main>
   );
 };

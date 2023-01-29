@@ -18,6 +18,15 @@ app.get("/api/tasks", (req, res) => {
   });
 });
 
+app.post("/api/tasks", (req, res) => {
+  const { description } = req.body;
+  sql `INSERT INTO tasks (description) VALUES (${description}) RETURNING *`.then(
+      (result) => {
+          res.send(result[0])
+      }
+  )
+});
+
 app.listen(3000, () => {
   console.log("listening on port 3000");
 });
