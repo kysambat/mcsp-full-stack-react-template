@@ -3,7 +3,6 @@ import TodoList from "./TodoList";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
-  const [todos, setTodos] = useState([]);
   const todoNameRef = useRef()
 
   useEffect(() => {
@@ -17,38 +16,38 @@ const App = () => {
   }, []);
 
   function toggleTodo(id) {
-    const newTodos = [...todos]
-    const todo = newTodos.find(todo => todo.id === id)
-    todo.complete = !todo.complete
-    setTodos(newTodos)
+    const newTodos = [...tasks]
+    const tasks = newTodos.find(tasks => tasks.id === id)
+    tasks.complete = !tasks.complete
+    setTasks(newTodos)
   }
 
   function handleAddTodo(e) {
     const name = todoNameRef.current.value
     if (name === '') return
-    setTodos(prevTodos => {
+    setTasks(prevTodos => {
       return [...prevTodos, { id: 1, name: name, complete: false}]
     })
     todoNameRef.current.value = null
   }
 
   function handleClearTodos() {
-    const newTodos = todos.filter(todo => !todo.complete)
-    setTodos(newTodos)
+    const newTodos = tasks.filter(tasks => !tasks.complete)
+    setTasks(newTodos)
   }
 
   return (
     <main>
-      {tasks.map((task) => (
-        <span className="task" key={task.id}>
-          {task.description}
+      {tasks.map((tasks) => (
+        <span className="task" key={tasks.id}>
+          {tasks.description}
         </span>
       ))}
-      <TodoList todos={todos} toggleTodo={toggleTodo} />
+      <TodoList tasks={tasks} toggleTodo={toggleTodo} />
       <input ref={todoNameRef} type="text" />
       <button onClick={handleAddTodo}>Add Todo</button>
       <button onClick={handleClearTodos}>Clear Complete</button>
-      <div>{todos.filter(todo => !todo.complete).length} left to do</div>
+      <div>{tasks.filter(tasks => !tasks.complete).length} left to do</div>
     </main>
   );
 };
