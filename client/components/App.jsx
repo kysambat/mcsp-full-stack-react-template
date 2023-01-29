@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import TodoList from "./TodoList";
 import Task from "./tasks";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState('');
   const todoNameRef = useRef()
 
   useEffect(() => {
@@ -18,38 +18,43 @@ const App = () => {
 
 
   function handleAddTodo(e) {
-    const name = todoNameRef.current.value
     fetch("http://localhost:3000/api/tasks", {
     method: "POST",
-    body: JSON.stringify({description:name}),
+    body: JSON.stringify({description:input}),
     headers: {"Content-Type":"application/json"}
 
     })
       .then((res) => res.json())
       .then((tasks) => {
         setTasks(tasks);
+        location.reload();
+        console.log("hi")
       });
-      console.log(tasks)
+     console.log(tasks)
 
-    refresh();
   }
 
-  function refresh() {
-    fetch("http://localhost:3000/api/tasks", {
-    method: "GET"
-    })
-      .then((res) => res.json())
-      .then((tasks) => {
+  function setChange() {
+    const name = todoNameRef.current.value
+    setInput(name);
+    
+  }
+
+  // function refresh() {
+  //   fetch("http://localhost:3000/api/tasks", {
+  //   method: "GET"
+  //   })
+  //     .then((res) => res.json())
+  //     .then((tasks) => {
         
-      });
-  }
+  //     });
+  // }
 
 
   return (
     <main>
       <Task tasks={tasks} />
-      <TodoList tasks={tasks} />
-      <input ref={todoNameRef} type="text" />
+      <input onChange={setChange} ref={todoNameRef} type="text" />
       <button onClick={handleAddTodo}>Add Todo</button>
     </main>
   );
