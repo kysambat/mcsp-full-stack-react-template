@@ -40,17 +40,6 @@ const App = () => {
     
   }
 
-  // function refresh() {
-  //   fetch("http://localhost:3000/api/tasks", {
-  //   method: "GET"
-  //   })
-  //     .then((res) => res.json())
-  //     .then((tasks) => {
-        
-  //     });
-  // }
-
-
   return (
     <main>
       <Task tasks={tasks} />
