@@ -5,7 +5,8 @@ export default function Task(props) {
         <div>
         {props.tasks.map((task) => (
             <span className="task" key={task.id}>
-              {task.description}
+             <ul>{task.id} </ul>
+             <ul> {task.description}</ul>
             </span>
           ))}
         </div>

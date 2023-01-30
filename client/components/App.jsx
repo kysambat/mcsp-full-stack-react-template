@@ -17,7 +17,7 @@ const App = () => {
   }, []);
 
 
-  function handleAddTodo(e) {
+  function addTodo(e) {
     fetch("http://localhost:3000/api/tasks", {
     method: "POST",
     body: JSON.stringify({description:input}),
@@ -28,10 +28,7 @@ const App = () => {
       .then((tasks) => {
         setTasks(tasks);
         location.reload();
-        console.log("hi")
       });
-     console.log(tasks)
-
   }
 
   function setChange() {
@@ -44,7 +41,7 @@ const App = () => {
     <main>
       <Task tasks={tasks} />
       <input onChange={setChange} ref={todoNameRef} type="text" />
-      <button onClick={handleAddTodo}>Add Todo</button>
+      <button onClick={addTodo}>Add Todo</button>
     </main>
   );
 };

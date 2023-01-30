@@ -27,6 +27,16 @@ app.post("/api/tasks", (req, res) => {
   )
 });
 
+app.delete("/api/tasks/:id", (req, res) => {
+  const id =req.params.id;
+  sql `DELETE FROM tasks WHERE id = ${id} RETURNING *`.then(
+    (result) => {
+          res.send(`Task has been deleted.`)
+      }
+  )
+});
+
+
 app.listen(3000, () => {
   console.log("listening on port 3000");
 });
